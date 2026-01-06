@@ -1,12 +1,11 @@
 package io.github.pedrohrr25.portaria_api.adapter.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "tb_usuario")
 public class UsuarioEntity {
 
     @Id
@@ -16,14 +15,19 @@ public class UsuarioEntity {
     private String email;
     private Boolean administrador;
 
+    @OneToOne
+    @JoinColumn(name = "pessoa_id")
+    private PessoaEntity pessoaEntity;
+
     public UsuarioEntity() {
     }
 
-    public UsuarioEntity(Long id, String senha, String email, Boolean administrador) {
+    public UsuarioEntity(Long id, String senha, String email, Boolean administrador, PessoaEntity pessoa) {
         this.id = id;
         this.senha = senha;
         this.email = email;
         this.administrador = administrador;
+        this.pessoaEntity = pessoa;
     }
 
     public Long getId() {
@@ -56,5 +60,13 @@ public class UsuarioEntity {
 
     public void setAdministrador(Boolean administrador) {
         this.administrador = administrador;
+    }
+
+    public PessoaEntity getPessoa() {
+        return pessoaEntity;
+    }
+
+    public void setPessoa(PessoaEntity pessoa) {
+        this.pessoaEntity = pessoa;
     }
 }
