@@ -33,6 +33,15 @@ public class UsuarioRepositoryAdapter implements UsuarioRepositoryPort {
         return modelMapper.map(novoUsuario, Usuario.class);
     }
 
+    @Override
+    public Usuario obtainByEmail(String email) {
+        UsuarioEntity usuarioByEmail = usuarioRepository.findByEmail(email);
+        if (usuarioByEmail == null) {
+            return null;
+        }
+        return modelMapper.map(usuarioByEmail, Usuario.class);
+    }
+
     private PessoaEntity createPessoa(Pessoa pessoa) {
         PessoaEntity pessoaEntity = modelMapper.map(pessoa, PessoaEntity.class);
         return pessoaReposity.save(pessoaEntity);

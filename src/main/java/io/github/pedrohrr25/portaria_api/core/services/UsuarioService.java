@@ -7,16 +7,19 @@ import org.springframework.stereotype.Service;
 
 public class UsuarioService implements UsuarioServicePort {
 
-    private final UsuarioRepositoryPort usuarioServicePort;
+    private final UsuarioRepositoryPort usuarioRepositoryPort;
 
 
-    public UsuarioService(UsuarioRepositoryPort usuarioServicePort) {
-        this.usuarioServicePort = usuarioServicePort;
+    public UsuarioService(UsuarioRepositoryPort usuarioRepositoryPort) {
+        this.usuarioRepositoryPort = usuarioRepositoryPort;
     }
-
 
     @Override
     public Usuario create(Usuario usuario) {
-        return usuarioServicePort.create(usuario);
+        Usuario usuarioExistente = usuarioRepositoryPort.obtainByEmail(usuario.getEmail());
+        if (usuarioExistente != null) {
+            throw new IllegalArgumentException("Usuário com esse email já existe.");
+        }
+        return usuarioRepositoryPort.create(usuario);
     }
 }
